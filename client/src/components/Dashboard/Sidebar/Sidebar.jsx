@@ -10,15 +10,22 @@ import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { MdHomeWork } from "react-icons/md";
 import MenuItem from "./Menu/MenuItem";
+import HostMenu from "./Menu/Hostmenu";
+import useRole from "../../../hooks/useRole";
+import GuestMenu from "./Menu/GuestMenu";
+import AdminMenu from "./Menu/AdminMenu";
+import LoadingSpinner from "../../Shared/LoadingSpinner";
 
 const Sidebar = () => {
   const { logOut } = useAuth();
   const [isActive, setActive] = useState(false);
+  const [role, isLoading] = useRole();
 
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive);
   };
+  if (isLoading) return <LoadingSpinner />;
   return (
     <>
       {/* Small Screen Navbar */}
@@ -72,24 +79,18 @@ const Sidebar = () => {
 
             {/*  Menu Items */}
             <nav>
-              {/* Statistics */}
+              {/* statitics */}
               <MenuItem
                 label={"Statistics"}
                 address={"/dashboard"}
                 icon={BsGraphUp}
               />
-              {/* Add room */}
-              <MenuItem
-                label={"Add Room"}
-                address={"add-room"}
-                icon={BsFillHouseAddFill}
-              />
-              {/* my-listings */}
-              <MenuItem
-                label={"My Listing"}
-                address={"my-listings"}
-                icon={MdHomeWork}
-              />
+              {/* guest menu */}
+              {role === "guest" && <GuestMenu />}
+              {/* host menu */}
+              {role === "host" && <HostMenu />}
+              {/* admin menu */}
+              {role === "admin" && <AdminMenu />}
             </nav>
           </div>
         </div>
