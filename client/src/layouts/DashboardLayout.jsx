@@ -1,8 +1,10 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Sidebar from "../components/Dashboard/Sidebar";
+import useRole from "../hooks/useRole";
+import Sidebar from "../components/Dashboard/Sidebar/Sidebar";
 
 const DashboardLayout = () => {
+  const [role] = useRole();
   return (
     <div className="relative min-h-screen md:flex">
       <div>

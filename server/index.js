@@ -88,8 +88,8 @@ async function run() {
       const result = await userCollection.find().toArray();
       res.send(result);
     });
-    // saved user from database
 
+    // saved user from database
     app.put("/user", async (req, res) => {
       const user = req.body;
       // console.log("user", user);
@@ -121,6 +121,14 @@ async function run() {
         // console.log("up re", result);
         res.send(result);
       }
+    });
+
+    // get user email by db
+    app.get("/user/:email", async (req, res) => {
+      const user = req.body;
+      const email = req.params.email;
+      const result = await userCollection.findOne({ email });
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection
