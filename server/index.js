@@ -132,6 +132,20 @@ async function run() {
       res.send(result);
     });
 
+    // user role updated by email
+    app.patch("/user/update/:email", async (req, res) => {
+      const user = req.body;
+      const email = req.params.email;
+      console.log("email", email);
+      const query = { email };
+      const updatedDoc = {
+        $set: { ...user, timestamp: Date.now },
+      };
+      const result = await userCollection.updateOne(query, updatedDoc);
+      console.log(result);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(

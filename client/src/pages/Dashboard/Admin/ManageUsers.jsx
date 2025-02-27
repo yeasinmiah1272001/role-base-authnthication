@@ -2,18 +2,24 @@ import { Helmet } from "react-helmet-async";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import UserDataRow from "../../../components/TableRows/UserDataRow";
+import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: users, isLoading } = useQuery({
+  const {
+    data: users,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["users"],
     // enabled: !loading && !!user?.email,
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/users`);
-      console.log("users", data);
+      //   console.log("users", data);
       return data;
     },
   });
+  if (isLoading) return <LoadingSpinner />;
   return (
     <>
       <div className="container mx-auto px-4 sm:px-8 w-full">
@@ -56,7 +62,7 @@ const ManageUsers = () => {
                 <tbody>
                   {/* User data table row */}
                   {users.map((user) => (
-                    <UserDataRow key={user._id} user={user} />
+                    <UserDataRow key={user._id} user={user} refetch={refetch} />
                   ))}
                 </tbody>
               </table>
